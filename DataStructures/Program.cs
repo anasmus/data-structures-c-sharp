@@ -15,7 +15,9 @@ namespace DataStructures
             list.InsertFirst(1);
             list.InsertFirst(2);
             list.InsertFirst(3);
-            Console.WriteLine(list.InsertAt(3,0));
+            list.InsertAt(3, 0);
+            Console.WriteLine(list);
+            list.Reverse();
             Console.WriteLine(list);
             Console.ReadLine();
         }

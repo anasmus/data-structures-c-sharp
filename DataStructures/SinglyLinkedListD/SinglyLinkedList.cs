@@ -9,6 +9,7 @@ namespace DataStructures.SinglyLinkedListD
     public class SinglyLinkedList
     {
         private Node _head;
+        private int _count;
         public SinglyLinkedList()
         {
             _head = null;
@@ -38,6 +39,7 @@ namespace DataStructures.SinglyLinkedListD
             Node nextNode = new Node(value);
             nextNode.Next = _head;
             _head = nextNode;
+            _count++;
         }
 
         public bool InsertAt(int index, int value)
@@ -55,6 +57,7 @@ namespace DataStructures.SinglyLinkedListD
                     Node nextNode = new Node(value);
                     nextNode.Next = node.Next;
                     node.Next = nextNode;
+                    _count++;
                     return true;
                 }
                 idx++;
@@ -67,6 +70,7 @@ namespace DataStructures.SinglyLinkedListD
             if (_head != null)
             {
                 _head = _head.Next;
+                _count--;
             }
         }
 
@@ -86,6 +90,7 @@ namespace DataStructures.SinglyLinkedListD
                     if (node.Value == value)
                     {
                         previousNode.Next = node.Next;
+                        _count--;
                         return true;
                     }
                 }
@@ -110,6 +115,7 @@ namespace DataStructures.SinglyLinkedListD
                     if (index == idx)
                     {
                         previousNode.Next = node.Next;
+                        _count--;
                         return true;
                     }
                     idx++;
@@ -132,6 +138,28 @@ namespace DataStructures.SinglyLinkedListD
             return -1;
         }
 
+        public bool Contains(int  value)
+        {
+            for (Node node = _head; node != null; node = node.Next)
+            {
+                if (node.Value == value)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void Reverse()
+        {
+            Node oldHead = _head;
+            Empty();
+            for (Node node = oldHead;  node != null; node = node.Next)
+            {
+                InsertFirst(node.Value);
+            }
+        }
+
         public bool IsEmpty()
         {
             return _head == null;
@@ -140,6 +168,7 @@ namespace DataStructures.SinglyLinkedListD
         public void Empty()
         {
             _head = null;
+            _count = 0;
         }
 
         public override string ToString()
@@ -159,6 +188,11 @@ namespace DataStructures.SinglyLinkedListD
                 result = "[]";
             }
             return result;
+        }
+
+        public int Count
+        {
+            get => _count;
         }
     }
 }
