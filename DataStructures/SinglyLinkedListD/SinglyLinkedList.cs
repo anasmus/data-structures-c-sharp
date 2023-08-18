@@ -22,6 +22,7 @@ namespace DataStructures.SinglyLinkedListD
 
         public int? Get(int index)
         {
+            if (index >= _count) return null;
             int idx = 0;
             for (Node node = _head; node != null; node = node.Next)
             {
@@ -44,6 +45,7 @@ namespace DataStructures.SinglyLinkedListD
 
         public bool InsertAt(int index, int value)
         {
+            if (index > _count) return false;
             if (index == 0)
             {
                 InsertFirst(value);
@@ -102,6 +104,7 @@ namespace DataStructures.SinglyLinkedListD
         {
             if (_head != null)
             {
+                if (index >= _count) return false;
                 if (index == 0)
                 {
                     RemoveFirst();
@@ -138,7 +141,7 @@ namespace DataStructures.SinglyLinkedListD
             return -1;
         }
 
-        public bool Contains(int  value)
+        public bool Contains(int value)
         {
             for (Node node = _head; node != null; node = node.Next)
             {
