@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -115,7 +116,7 @@ namespace DataStructures.DoublyLinkedListD
             _count++;
         }
 
-        public void InsertFromHead(int index, int value)
+        private void InsertFromHead(int index, int value)
         {
             int idx = 0;
             Node newNode = new Node(value);
@@ -135,7 +136,7 @@ namespace DataStructures.DoublyLinkedListD
             _count++;
         }
 
-        public void InsertFromTail(int index, int value)
+        private void InsertFromTail(int index, int value)
         {
             int idx = _count - 1;
             Node newNode = new Node(value);
@@ -157,7 +158,7 @@ namespace DataStructures.DoublyLinkedListD
 
         public bool InsertAt(int index, int value)
         {
-            if (index > _count) return false;
+            if (_head == null || index > _count) return false;
             if (index == 0)
             {
                 InsertFirst(value);
@@ -175,6 +176,18 @@ namespace DataStructures.DoublyLinkedListD
                 InsertFromHead(index, value);
             }
             return true;
+        }
+
+        private void RemoveNode(Node node)
+        {
+            Node lastNode = node.Left;
+            Node nextNode = node.Right;
+            lastNode.Right = nextNode;
+            if (nextNode != null)
+            {
+                nextNode.Left = lastNode;
+            }
+            _count--;
         }
 
         public bool RemoveFirst()
@@ -199,11 +212,104 @@ namespace DataStructures.DoublyLinkedListD
             return true;
         }
 
+        private void RemoveFromHead(int index)
+        {
+            int idx = 0;
+            for (Node node = _head; node != null; node = node.Right)
+            {
+                if (index == idx)
+                {
+                    RemoveNode(node);
+                    break;
+                }
+                idx++;
+            }
+        }
+
+        private void RemoveFromTail(int index)
+        {
+            int idx = _count - 1;
+            for (Node node = _tail; node != null; node = node.Left)
+            {
+                if (index == idx)
+                {
+                    RemoveNode(node);
+                    break;
+                }
+                idx--;
+            }
+        }
+
+        public bool Remove(int value)
+        {
+            if (_head == null) return false;
+            if (_head.Value == value) return RemoveFirst();
+            if (_tail.Value == value) return RemoveLast();
+            for (Node node = _head; node != null; node = node.Right)
+            {
+                if (node.Value == value)
+                {
+                    RemoveNode(node);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool RemoveAt(int index)
+        {
+            if (_head == null || index >= _count) return false;
+            if (index == 0) return RemoveFirst();
+            if (index == _count - 1) return RemoveLast();
+            if (index > _count / 2)
+            {
+                RemoveFromTail(index);
+            } 
+            else
+            {
+                RemoveFromHead(index);
+            }
+            return true;
+        }
+
+        public int Search(int value)
+        {
+            if (_head == null) return -1;
+            int index = 0;
+            for (Node node = _head; node != null; node = node.Right)
+            {
+                if (node.Value == value)
+                {
+                    return index;
+                }
+                index++;
+            }
+            return -1;
+        }
+
+        public bool Contains(int value)
+        {
+            if (_head == null) return false;
+            for (Node node = _head; node != null; node = node.Right)
+            {
+                if (node.Value == value)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void Empty()
         {
             _head = null;
             _tail = null;
             _count = 0;
+        }
+
+        public bool IsEmpty()
+        {
+            return _head == null;
         }
 
         public override string ToString()
